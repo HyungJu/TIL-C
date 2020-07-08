@@ -1,31 +1,39 @@
-// https://codeup.kr/problem.php?id=4818
-// k!=0 일때는 고려안함
-
 #include <stdio.h>
 
-int main(void) {
-  int w,h,k,i,j,a;
-  int d[16][16] = {0};
+int d[16][16] = {0};
 
-  scanf("%d %d %d", &w, &h, &k);
+void init(int w1, int h1, int w2, int h2){
+  int i,j;
 
-  d[1][0] = 1;
+  for(i=0; i<16; i++){
+    for(j=0; j<16; j++){
+      d[i][j] = 0;
+    }
+  }
 
-  for(i=1; i<=w; i++){
-    for(j=1; j<=h; j++){
+  d[w1][h1-1] = 1;
+  for(i=w1; i<=w2; i++){
+    for(j=h1; j<=h2; j++){
       d[i][j] = d[i-1][j] + d[i][j-1];
     }
   }
+}
 
-  for(i=0; i<=w; i++){
-    for(j=0; j<=h; j++){
-      printf("d[%d][%d]: %d ", i,j,d[i][j]);
-    }
-    printf("\n");
-  }
-
-  printf("result : %d", d[w][h]);
+int main(void) {
+  int w,h,k,i,j,a;
 
 
+  scanf("%d %d %d", &w, &h, &k);
+
+
+  init(1, 1, w, h);
+  if(k!=0){
+    a = d[k/h][k/w];
+    init(k%w, k/w+1, w, h);
+    printf("result : %d", d[w][h] * a);
+  }else
+    printf("result : %d", d[w][h]);
+  
   return 0;
 }
+
